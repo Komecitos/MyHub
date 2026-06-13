@@ -1,0 +1,11 @@
+{
+    "name": "FreeFire",
+    "alias": "freefire",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\FreeFire\\Providers\\FreeFireServiceProvider"
+    ],
+    "files": []
+}

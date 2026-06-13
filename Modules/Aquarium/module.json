@@ -1,0 +1,11 @@
+{
+    "name": "Aquarium",
+    "alias": "aquarium",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Aquarium\\Providers\\AquariumServiceProvider"
+    ],
+    "files": []
+}
