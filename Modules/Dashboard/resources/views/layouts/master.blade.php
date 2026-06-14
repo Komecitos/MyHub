@@ -5,6 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MyHub</title>
+    <link rel="stylesheet" href="{{ asset('css/theme/variable.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/theme/color.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/theme/typography.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/theme/spacing.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/layouts/app.css') }}">
     <style>
         * {
             margin: 0;

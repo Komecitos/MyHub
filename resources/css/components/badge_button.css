@@ -1,0 +1,83 @@
+/* ===== BUTTON ===== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-xs);
+    padding: 0.4rem 1rem;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-base);
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    border: 1px solid transparent;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: var(--accent-primary);
+    color: var(--text-primary);
+    border-color: var(--accent-primary);
+}
+
+.btn-primary:hover {
+    background: #4f46e5;
+    border-color: #4f46e5;
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--text-muted);
+    border-color: var(--border-default);
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+}
+
+.btn-danger {
+    background: transparent;
+    color: var(--color-danger);
+    border-color: var(--color-danger);
+}
+
+.btn-danger:hover {
+    background: var(--color-danger);
+    color: white;
+}
+
+.btn-success {
+    background: transparent;
+    color: var(--color-success);
+    border-color: var(--color-success);
+}
+
+.btn-success:hover {
+    background: var(--color-success);
+    color: white;
+}
+
+.btn-sm { padding: 0.3rem 0.75rem; font-size: 0.78rem; }
+.btn-lg { padding: 0.7rem 2rem; font-size: 1rem; }
+
+/* ===== BADGE ===== */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+}
+
+.badge-priority-high    { background: rgba(231, 76, 60, 0.15);  color: var(--color-danger);  }
+.badge-priority-medium  { background: rgba(243, 156, 18, 0.15); color: var(--color-warning); }
+.badge-priority-low     { background: rgba(46, 204, 113, 0.15); color: var(--color-success); }
+
+.badge-status-pending     { background: rgba(148, 163, 184, 0.15); color: var(--text-muted); }
+.badge-status-in_progress { background: rgba(99, 102, 241, 0.15);  color: var(--accent-primary); }
+.badge-status-completed   { background: rgba(46, 204, 113, 0.15);  color: var(--color-success); }

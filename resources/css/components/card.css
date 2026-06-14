@@ -1,0 +1,110 @@
+/* ===== CARD ===== */
+.card {
+    background: linear-gradient(180deg, var(--bg-card), var(--bg-card-2));
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl) var(--space-lg);
+    box-shadow: var(--shadow-md);
+    transition: var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.card:hover {
+    border-color: var(--border-hover);
+    box-shadow: var(--shadow-lg);
+    background: linear-gradient(180deg, var(--bg-card-hover), var(--bg-card-2));
+}
+
+.card:hover::before {
+    opacity: 1;
+}
+
+/* Portal card (dashboard grid) */
+.portal-card {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.portal-card-content {
+    background: linear-gradient(180deg, var(--bg-card), var(--bg-card-2));
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl) var(--space-lg);
+    text-align: center;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition-normal);
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.portal-card-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.portal-card:hover .portal-card-content {
+    border-color: var(--border-hover);
+    box-shadow: var(--shadow-lg);
+    background: linear-gradient(180deg, var(--bg-card-hover), var(--bg-card-2));
+}
+
+.portal-card:hover .portal-card-content::before {
+    opacity: 1;
+}
+
+/* Task card (todo list) */
+.task-card {
+    background: linear-gradient(180deg, var(--bg-card), var(--bg-card-2));
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-md);
+    padding: var(--space-md) var(--space-lg);
+    margin-bottom: var(--space-sm);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: var(--transition-fast);
+}
+
+.task-card:hover {
+    border-color: var(--border-hover);
+    background: linear-gradient(180deg, var(--bg-card-hover), var(--bg-card-2));
+}
+
+.task-card.completed {
+    opacity: 0.5;
+}
+
+.task-card.completed .task-title {
+    text-decoration: line-through;
+    color: var(--text-muted);
+}
+
+/* Priority border */
+.task-card.priority-high   { border-left: 4px solid var(--color-danger);  }
+.task-card.priority-medium { border-left: 4px solid var(--color-warning); }
+.task-card.priority-low    { border-left: 4px solid var(--color-success); }

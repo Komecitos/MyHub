@@ -1,0 +1,14 @@
+:root {
+    --space-xs: 0.25rem;
+    --space-sm: 0.5rem;
+    --space-md: 1rem;
+    --space-lg: 1.5rem;
+    --space-xl: 2rem;
+    --space-2xl: 3rem;
+    --space-3xl: 4rem;
+
+    --container-max: 1280px;
+    --container-pad: 1.5rem;
+
+    --bottom-bar-height: 72px;
+}
