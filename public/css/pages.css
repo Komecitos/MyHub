@@ -1,0 +1,227 @@
+/* ===== PAGES (Common index/page styles) ===== */
+
+.page-wrapper {
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: var(--space-lg) var(--container-pad);
+    box-sizing: border-box;
+}
+
+.page-header {
+    margin-bottom: var(--space-lg);
+    text-align: left;
+}
+
+.page-header .title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 var(--space-sm) 0;
+}
+
+.page-header .subtitle {
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.page-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-lg);
+}
+
+@media (max-width: 960px) {
+    .page-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    /* Sections and helpers used by pages */
+    .empty-state {
+        color: var(--text-muted);
+    }
+
+    .section-container {
+        margin-top: var(--space-lg);
+    }
+
+    .section-header {
+        color: var(--text-muted);
+        font-size: var(--text-sm);
+        margin-bottom: var(--space-md);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+}
+
+@media (max-width: 560px) {
+    .page-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .page-wrapper {
+        padding: var(--space-md) var(--space-sm);
+    }
+}
+
+/* ===== TODO LAYOUT ===== */
+.todo-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+.todo-left {
+    min-width: 0;
+}
+
+.todo-right {
+    position: sticky;
+    top: 4rem;
+}
+
+/* ===== WIDGET ===== */
+.widget-card {
+    background: linear-gradient(180deg, var(--bg-card), var(--bg-card-2));
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+    padding: var(--space-sm) var(--space-md);
+}
+
+.widget-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--space-md);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* ===== STATISTIK ===== */
+.stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-sm);
+}
+
+.stat-item {
+    background: var(--bg-card-2);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 0.3rem 0.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.stat-number {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.stat-label {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+}
+
+.stat-item.stat-danger {
+    border-color: rgba(239, 68, 68, 0.3);
+    background: rgba(239, 68, 68, 0.06);
+}
+
+.stat-item.stat-success {
+    border-color: rgba(34, 197, 94, 0.3);
+    background: rgba(34, 197, 94, 0.06);
+}
+
+.stat-number {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+/* ===== MINI CALENDAR ===== */
+.mini-calendar {
+    width: 100%;
+}
+
+.cal-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    margin-bottom: 0.25rem;
+}
+
+.cal-day {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    border-radius: 50%;
+    color: var(--text-muted);
+    cursor: default;
+    position: relative;
+}
+
+.cal-body {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+}
+
+.cal-day.today {
+    background: var(--accent-primary);
+    color: white;
+    font-weight: 600;
+}
+
+.cal-day.has-task {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.cal-day.has-task {
+    color: var(--text-primary);
+    font-weight: 500;
+    position: relative;
+}
+
+.cal-day.has-task::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    background: var(--accent-primary);
+    border-radius: 50%;
+}
+
+.cal-day.empty {
+    visibility: hidden;
+}
+
+.cal-nav {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0 0.25rem;
+    line-height: 1;
+}
+
+.cal-nav:hover {
+    color: var(--text-primary);
+}

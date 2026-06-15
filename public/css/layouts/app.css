@@ -50,11 +50,14 @@ body {
     background: rgba(9, 11, 19, 0.8);
     border-bottom: 1px solid var(--border-subtle);
     backdrop-filter: blur(6px);
-    padding: var(--space-md) var(--space-xl);
+    padding: 0.75rem var(--container-pad);
     display: flex;
     align-items: center;
     gap: var(--space-md);
     flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    z-index: var(--z-overlay);
 }
 
 .top-bar>* {
@@ -92,6 +95,12 @@ body {
 .top-bar a:hover {
     color: var(--text-primary);
     border-color: var(--border-hover);
+}
+
+.task-counter {
+    margin-left: auto;
+    font-size: 0.8rem;
+    color: var(--text-muted);
 }
 
 /* ===== MAIN CONTENT ===== */

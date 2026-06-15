@@ -1,75 +1,106 @@
-<x-dashboard::layouts.master>
+@extends('layouts.app')
 
-    <link rel="stylesheet" href="{{ asset('css/modules/dashboard.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+@section('topbar')
+{{-- Dashboard tidak perlu topbar, kosongkan --}}
+@endsection
 
-    <div class="dashboard-wrapper">
-        <div class="dashboard-header">
-            <h2>Selamat datang di MyHub</h2>
-            <p>Pilih portal yang ingin kamu buka</p>
-        </div>
+@section('content')
 
-        <div class="portal-grid">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-            <a href="/todos" class="portal-card">
-                <div class="portal-card-content">
-                    <span class="portal-icon">
-                        <div class="w-24 h-24 flex items-center justify-center">
-                            <img
-                                src="{{ asset('assets/images/todo_logo.png') }}"
-                                alt="Logo"
-                                class="max-w-full max-h-full object-contain">
-                        </div>
-                    </span>
-                    <p class="portal-title">Todo</p>
-                    <p class="portal-desc">Manajemen tugas</p>
-                </div>
-            </a>
+@push('styles')
+<style>
+    .top-bar {
+        display: none;
+    }
 
-            <a href="/notes" class="portal-card">
-                <div class="portal-card-content">
-                    <span class="portal-icon">📝</span>
-                    <p class="portal-title">Notes</p>
-                    <p class="portal-desc">Catatan harian</p>
-                </div>
-            </a>
+    .back-btn {
+        display: none;
+    }
 
-            <a href="/aquaria" class="portal-card">
-                <div class="portal-card-content">
-                    <span class="portal-icon">🐠</span>
-                    <p class="portal-title">Aquarium</p>
-                    <p class="portal-desc">Monitor akuarium</p>
-                </div>
-            </a>
+    .portal-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(220px, 1fr)) !important;
+        gap: 2rem;
+        width: 100%;
+        max-width: 1100px;
+        justify-items: stretch;
+        justify-content: center;
+    }
 
-            <a href="/calendars" class="portal-card">
-                <div class="portal-card-content">
-                    <span class="portal-icon">📅</span>
-                    <p class="portal-title">Calendar</p>
-                    <p class="portal-desc">Jadwal & agenda</p>
-                </div>
-            </a>
+    .dashboard-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 1rem;
+    }
 
-            <a href="/freefires" class="portal-card">
-                <div class="portal-card-content">
-                    <span class="portal-icon">
-                        <div class="w-24 h-24 flex items-center justify-center">
-                            <img
-                                src="{{ asset('assets/images/ff_logo.webp') }}"
-                                alt="Logo"
-                                class="max-w-full max-h-full object-contain">
-                        </div>
-                    </span>
-                    <p class=" portal-title">Free Fire</p>
-                    <p class="portal-desc">Game tracker</p>
-                </div>
-            </a>
+    .dashboard-header {
+        text-align: center;
+        margin-bottom: 2.5rem;
+    }
+</style>
+@endpush
 
-        </div>
+<div class="dashboard-wrapper">
+    <div class="dashboard-header">
+        <h1>Selamat datang di MyHub</h1>
+        <h3>Pilih portal yang ingin kamu buka</h3>
     </div>
 
-    <footer class="bottom-bar" role="contentinfo">
-        <div class="bottom-bar-inner">MyHub &middot; © {{ date('Y') }}</div>
-    </footer>
+    <style>
+        .portal-grid {
+            justify-content: center;
+        }
+    </style>
 
-</x-dashboard::layouts.master>
+    <div class="portal-grid">
+
+        <a href="/todos" class="portal-card">
+            <div class="portal-card-content">
+                <span class="portal-icon">
+                    <img src="{{ asset('assets/images/todo_logo.png') }}" alt="Todo">
+                </span>
+                <p class="portal-title">Todo</p>
+                <p class="portal-desc">Manajemen tugas</p>
+            </div>
+        </a>
+
+        <a href="/notes" class="portal-card">
+            <div class="portal-card-content">
+                <span class="portal-icon">📝</span>
+                <p class="portal-title">Notes</p>
+                <p class="portal-desc">Catatan harian</p>
+            </div>
+        </a>
+
+        <a href="/aquaria" class="portal-card">
+            <div class="portal-card-content">
+                <span class="portal-icon">🐠</span>
+                <p class="portal-title">Aquarium</p>
+                <p class="portal-desc">Monitor akuarium</p>
+            </div>
+        </a>
+
+        <a href="/calendars" class="portal-card">
+            <div class="portal-card-content">
+                <span class="portal-icon">📅</span>
+                <p class="portal-title">Calendar</p>
+                <p class="portal-desc">Jadwal & agenda</p>
+            </div>
+        </a>
+
+        <a href="/freefires" class="portal-card">
+            <div class="portal-card-content">
+                <span class="portal-icon">
+                    <img src="{{ asset('assets/images/ff_logo.webp') }}" alt="Free Fire">
+                </span>
+                <p class="portal-title">Free Fire</p>
+                <p class="portal-desc">Game tracker</p>
+            </div>
+        </a>
+
+    </div>
+</div>
+
+@endsection

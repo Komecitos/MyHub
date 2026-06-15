@@ -117,3 +117,49 @@ select.form-control {
     padding: var(--space-md);
     margin-bottom: var(--space-md);
 }
+
+/* ===== RECUR DAYS ===== */
+.recur-days-grid {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+}
+
+.recur-day-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    cursor: pointer;
+}
+
+.recur-day-label input[type="checkbox"] {
+    display: none;
+}
+
+.recur-day-label span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--border-default);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    transition: var(--transition-fast);
+    cursor: pointer;
+}
+
+.recur-day-label input[type="checkbox"]:checked+span {
+    background: var(--accent-primary);
+    border-color: var(--accent-primary);
+    color: white;
+}
+
+.recur-day-label span:hover {
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+}

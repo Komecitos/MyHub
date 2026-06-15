@@ -24,8 +24,13 @@ class Todo extends Model
         'is_recurring',
         'recur_type',
         'recur_interval',
+        'recur_days',
         'parent_id',
         'completed_at',
+    ];
+
+    protected $casts = [
+        'recur_days' => 'array',
     ];
     // protected static function newFactory(): TodoFactory
     // {

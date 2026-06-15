@@ -8,6 +8,10 @@
     z-index: var(--z-overlay);
 }
 
+.modal-overlay.show {
+    display: block;
+}
+
 /* ===== MODAL ===== */
 .modal {
     display: none;
@@ -25,6 +29,10 @@
     max-height: 90vh;
     overflow-y: auto;
     box-shadow: var(--shadow-lg);
+}
+
+.modal.show {
+    display: block;
 }
 
 .modal-sm {
@@ -67,19 +75,20 @@
     color: var(--text-primary);
 }
 
+.modal.modal-create {
+    max-width: 600px;
+    width: 95% !important;
+}
+
 /* ===== MODAL DELETE ===== */
 .modal-delete {
     text-align: center;
 }
 
-.modal-delete p {
+.modal-delete .task-meta {
     color: var(--text-muted);
     margin-bottom: var(--space-lg);
     font-size: 0.9rem;
-}
-
-.modal-delete .modal-actions {
-    justify-content: center;
 }
 
 /* ===== MODAL ACTIONS ===== */
@@ -88,6 +97,10 @@
     justify-content: flex-end;
     gap: var(--space-sm);
     margin-top: var(--space-md);
+}
+
+.modal-delete .modal-actions {
+    justify-content: center;
 }
 
 /* ===== SCROLLBAR ===== */
@@ -102,4 +115,13 @@
 .modal::-webkit-scrollbar-thumb {
     background: var(--border-default);
     border-radius: 999px;
+}
+
+/* ===== RECURRING ===== */
+.form-recurring {
+    display: none;
+}
+
+.form-recurring.show {
+    display: block;
 }

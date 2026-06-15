@@ -91,7 +91,7 @@
     {{-- Global Header --}}
     <header class="global-header">
         <a href="/" class="app-name">MyHub</a>
-        <a href="/" class="back-btn">← Back to Hub</a>
+        <a href="/" class="back-btn">Back to Hub</a>
     </header>
 
     @if(!Request::is('/'))

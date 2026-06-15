@@ -24,7 +24,7 @@ body {
 /* Dashboard Wrapper */
 .dashboard-wrapper {
     flex: 1 1 auto;
-    padding: var(--space-xl) var(--space-md) var(--space-lg);
+    padding: var(--space-2xl) var(--space-md) var(--space-lg);
     max-width: 1280px;
     margin: 0 auto;
     color: var(--text-primary);
@@ -46,7 +46,7 @@ body {
     font-size: 2rem;
     font-weight: 700;
     color: #f8fafc;
-    margin: 0 0 var(--space-xs) 0;
+    margin: var(--space-lg) 0 var(--space-xs) 0;
     letter-spacing: -0.5px;
 }
 

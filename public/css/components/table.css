@@ -70,3 +70,32 @@
     font-size: 0.9rem;
     margin-top: var(--space-sm);
 }
+
+/* ===== FILTER BAR ===== */
+.filter-bar {
+    display: flex;
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-lg);
+}
+
+/* ===== TABLE ROW COLORS ===== */
+tr.row-created {
+    background: rgba(59, 130, 246, 0.06);
+}
+
+tr.row-updated {
+    background: rgba(234, 179, 8, 0.06);
+}
+
+tr.row-completed {
+    background: rgba(34, 197, 94, 0.08);
+}
+
+tr.row-recovered {
+    background: rgba(148, 163, 184, 0.08);
+}
+
+tr.row-deleted {
+    background: rgba(239, 68, 68, 0.06);
+}

@@ -7,30 +7,28 @@
 @endsection
 
 @section('content')
-<h2 style="margin-bottom: 1.5rem;">New Task</h2>
+<div class="page-header">
+    <h2 class="title">New Task</h2>
+</div>
 
-<form action="{{ route('todo.store') }}" method="POST" style="max-width: 600px;">
+<form action="{{ route('todo.store') }}" method="POST" class="form-layout">
     @csrf
 
-    <div style="margin-bottom: 1rem;">
-        <label style="display: block; margin-bottom: 0.3rem; font-weight: 600;">Title <span style="color: red;">*</span></label>
-        <input type="text" name="title" value="{{ old('title') }}"
-            style="width: 100%; padding: 0.6rem; border: 1px solid #ddd; border-radius: 6px;"
-            placeholder="Nama tugas...">
-        @error('title') <p style="color: red; font-size: 0.8rem;">{{ $message }}</p> @enderror
+    <div class="form-group">
+        <label class="form-label">Title <span class="required">*</span></label>
+        <input type="text" name="title" value="{{ old('title') }}" class="form-control" placeholder="Nama tugas...">
+        @error('title') <p class="form-error">{{ $message }}</p> @enderror
     </div>
 
-    <div style="margin-bottom: 1rem;">
-        <label style="display: block; margin-bottom: 0.3rem; font-weight: 600;">Description</label>
-        <textarea name="description" rows="3"
-            style="width: 100%; padding: 0.6rem; border: 1px solid #ddd; border-radius: 6px;"
-            placeholder="Keterangan tambahan...">{{ old('description') }}</textarea>
+    <div class="form-group">
+        <label class="form-label">Description</label>
+        <textarea name="description" rows="3" class="form-control" placeholder="Keterangan tambahan...">{{ old('description') }}</textarea>
     </div>
 
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+    <div class="form-grid">
         <div>
-            <label style="display: block; margin-bottom: 0.3rem; font-weight: 600;">Priority</label>
-            <select name="priority" style="width: 100%; padding: 0.6rem; border: 1px solid #ddd; border-radius: 6px;">
+            <label class="form-label">Priority</label>
+            <select name="priority" class="form-control">
                 <option value="low" {{ old('priority') == 'low' ? 'selected' : '' }}>Low</option>
                 <option value="medium" {{ old('priority') == 'medium' ? 'selected' : 'selected' }}>Medium</option>
                 <option value="high" {{ old('priority') == 'high' ? 'selected' : '' }}>High</option>
@@ -38,8 +36,8 @@
         </div>
 
         <div>
-            <label style="display: block; margin-bottom: 0.3rem; font-weight: 600;">Status</label>
-            <select name="status" style="width: 100%; padding: 0.6rem; border: 1px solid #ddd; border-radius: 6px;">
+            <label class="form-label">Status</label>
+            <select name="status" class="form-control">
                 <option value="pending" {{ old('status') == 'pending' ? 'selected' : 'selected' }}>Pending</option>
                 <option value="in_progress" {{ old('status') == 'in_progress' ? 'selected' : '' }}>In Progress</option>
                 <option value="completed" {{ old('status') == 'completed' ? 'selected' : '' }}>Completed</option>
@@ -47,62 +45,62 @@
         </div>
     </div>
 
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+    <div class="form-grid">
         <div>
-            <label style="display: block; margin-bottom: 0.3rem; font-weight: 600;">Due Date</label>
-            <input type="date" name="due_date" value="{{ old('due_date') }}"
-                style="width: 100%; padding: 0.6rem; border: 1px solid #ddd; border-radius: 6px;">
+            <label class="form-label">Due Date</label>
+            <input type="date" name="due_date" value="{{ old('due_date') }}" class="form-control">
         </div>
 
         <div>
-            <label style="display: block; margin-bottom: 0.3rem; font-weight: 600;">Due Time</label>
-            <input type="time" name="due_time" value="{{ old('due_time') }}"
-                style="width: 100%; padding: 0.6rem; border: 1px solid #ddd; border-radius: 6px;">
+            <label class="form-label">Due Time</label>
+            <input type="time" name="due_time" value="{{ old('due_time') }}" class="form-control">
         </div>
     </div>
-
-    <div style="margin-bottom: 1rem;">
-        <label style="display: block; margin-bottom: 0.3rem; font-weight: 600;">Category</label>
-        <input type="text" name="category" value="{{ old('category') }}"
-            style="width: 100%; padding: 0.6rem; border: 1px solid #ddd; border-radius: 6px;"
-            placeholder="cth: Aquarium, Keuangan, Pribadi...">
+    <div class="form-group">
+        <label class="form-label">Category</label>
+        <input type="text" name="category" value="{{ old('category') }}" class="form-control" placeholder="cth: Aquarium, Keuangan, Pribadi...">
     </div>
 
-    <div style="margin-bottom: 1rem;">
-        <label style="display: flex; align-items: center; gap: 0.5rem; font-weight: 600;">
-            <input type="checkbox" name="is_recurring" value="1" {{ old('is_recurring') ? 'checked' : '' }}
-                onchange="toggleRecurring(this)">
-            Recurring Task
-        </label>
+    <div class="form-group">
+        <label class="form-check"><input type="checkbox" name="is_recurring" value="1" {{ old('is_recurring') ? 'checked' : '' }} onchange="toggleRecurring(this)"> Recurring Task</label>
     </div>
 
-    <div id="recurring-options" style="display: none; background: #f9f9f9; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+    <div id="recurring-options" class="form-recurring">
+        <div class="form-grid">
             <div>
-                <label style="display: block; margin-bottom: 0.3rem; font-weight: 600;">Repeat Every</label>
-                <input type="number" name="recur_interval" value="{{ old('recur_interval', 1) }}" min="1"
-                    style="width: 100%; padding: 0.6rem; border: 1px solid #ddd; border-radius: 6px;">
+                <label class="form-label">Repeat Every</label>
+                <input type="number" name="recur_interval" value="{{ old('recur_interval', 1) }}" min="1" class="form-control">
             </div>
             <div>
-                <label style="display: block; margin-bottom: 0.3rem; font-weight: 600;">Type</label>
-                <select name="recur_type" style="width: 100%; padding: 0.6rem; border: 1px solid #ddd; border-radius: 6px;">
+                <label class="form-label">Type</label>
+                <select name="recur_type" class="form-control">
                     <option value="daily">Day(s)</option>
                     <option value="weekly">Week(s)</option>
                     <option value="monthly">Month(s)</option>
                 </select>
             </div>
         </div>
+
+        <div class="form-group">
+
+            <label class="form-label">Days</label>
+
+            <label><input type="checkbox" name="recur_days[]" value="mon"> Senin</label>
+            <label><input type="checkbox" name="recur_days[]" value="tue"> Selasa</label>
+            <label><input type="checkbox" name="recur_days[]" value="wed"> Rabu</label>
+            <label><input type="checkbox" name="recur_days[]" value="thu"> Kamis</label>
+            <label><input type="checkbox" name="recur_days[]" value="fri"> Jumat</label>
+            <label><input type="checkbox" name="recur_days[]" value="sat"> Sabtu</label>
+            <label><input type="checkbox" name="recur_days[]" value="sun"> Minggu</label>
+        </div>
     </div>
 
-    <button type="submit"
-        style="background: #1e1e2e; color: white; padding: 0.7rem 2rem; border: none; border-radius: 6px; cursor: pointer; font-size: 1rem;">
-        Save Task
-    </button>
+    <button type="submit" class="btn btn-primary">Save Task</button>
 </form>
 
 <script>
     function toggleRecurring(checkbox) {
-        document.getElementById('recurring-options').style.display = checkbox.checked ? 'block' : 'none';
+        document.getElementById('recurring-options').classList.toggle('show', checkbox.checked);
     }
 </script>
 @endsection
