@@ -59,8 +59,15 @@
     color: white;
 }
 
-.btn-sm { padding: 0.3rem 0.75rem; font-size: 0.78rem; }
-.btn-lg { padding: 0.7rem 2rem; font-size: 1rem; }
+.btn-sm {
+    padding: 0.3rem 0.75rem;
+    font-size: 0.78rem;
+}
+
+.btn-lg {
+    padding: 0.7rem 2rem;
+    font-size: 1rem;
+}
 
 /* ===== BADGE ===== */
 .badge {
@@ -74,10 +81,107 @@
     text-transform: uppercase;
 }
 
-.badge-priority-high    { background: rgba(231, 76, 60, 0.15);  color: var(--color-danger);  }
-.badge-priority-medium  { background: rgba(243, 156, 18, 0.15); color: var(--color-warning); }
-.badge-priority-low     { background: rgba(46, 204, 113, 0.15); color: var(--color-success); }
+.badge-priority-high {
+    background: rgba(231, 76, 60, 0.15);
+    color: var(--color-danger);
+}
 
-.badge-status-pending     { background: rgba(148, 163, 184, 0.15); color: var(--text-muted); }
-.badge-status-in_progress { background: rgba(99, 102, 241, 0.15);  color: var(--accent-primary); }
-.badge-status-completed   { background: rgba(46, 204, 113, 0.15);  color: var(--color-success); }
+.badge-priority-medium {
+    background: rgba(243, 156, 18, 0.15);
+    color: var(--color-warning);
+}
+
+.badge-priority-low {
+    background: rgba(46, 204, 113, 0.15);
+    color: var(--color-success);
+}
+
+.badge-status-pending {
+    background: rgba(148, 163, 184, 0.15);
+    color: var(--text-muted);
+}
+
+.badge-status-in_progress {
+    background: rgba(99, 102, 241, 0.15);
+    color: var(--accent-primary);
+}
+
+.badge-status-completed {
+    background: rgba(46, 204, 113, 0.15);
+    color: var(--color-success);
+}
+
+.badge-epic {
+    background: rgba(168, 85, 247, 0.15);
+    color: #a855f7;
+    border: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+.badge-legendary {
+    background: rgba(234, 179, 8, 0.15);
+    color: #eab308;
+    border: 1px solid rgba(234, 179, 8, 0.3);
+}
+
+.badge-artifact {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(0, 0, 0, 0.3));
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    text-shadow: 0 0 8px rgba(239, 68, 68, 0.5);
+}
+
+.badge-success {
+    background: rgba(46, 204, 113, 0.15);
+    color: #2ecc71;
+    border: 1px solid rgba(46, 204, 113, 0.3);
+}
+
+.badge-info {
+    background: rgba(99, 102, 241, 0.15);
+    color: #818cf8;
+    border: 1px solid rgba(99, 102, 241, 0.3);
+}
+
+.badge-warning {
+    background: rgba(234, 179, 8, 0.15);
+    color: #eab308;
+    border: 1px solid rgba(234, 179, 8, 0.3);
+}
+
+.badge-danger {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.badge-secondary {
+    background: rgba(148, 163, 184, 0.12);
+    color: var(--text-muted);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.spin-count-buttons {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.spin-btn.active {
+    background: var(--accent-primary);
+    border-color: var(--accent-primary);
+    color: white;
+}
+
+.item-checkbox-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.item-checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    cursor: pointer;
+}
