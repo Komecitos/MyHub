@@ -66,27 +66,11 @@
             </div>
         </a>
 
-        <a href="/notes" class="portal-card">
-            <div class="portal-card-content">
-                <span class="portal-icon">📝</span>
-                <p class="portal-title">Notes</p>
-                <p class="portal-desc">Catatan harian</p>
-            </div>
-        </a>
-
         <a href="/aquaria" class="portal-card">
             <div class="portal-card-content">
                 <span class="portal-icon">🐠</span>
                 <p class="portal-title">Aquarium</p>
                 <p class="portal-desc">Monitor akuarium</p>
-            </div>
-        </a>
-
-        <a href="/calendars" class="portal-card">
-            <div class="portal-card-content">
-                <span class="portal-icon">📅</span>
-                <p class="portal-title">Calendar</p>
-                <p class="portal-desc">Jadwal & agenda</p>
             </div>
         </a>
 

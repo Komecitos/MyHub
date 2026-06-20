@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/modules/freefire.css') }}">
+@endpush
+
 @section('topbar')
 <a href="{{ route('freefire.calc') }}" class="btn btn-primary">Kalkulator</a>
 <a href="{{ route('freefire.session') }}" class="btn btn-secondary">Sesi Spin</a>

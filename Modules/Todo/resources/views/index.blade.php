@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/modules/todo.css') }}">
+@endpush
+
 @section('topbar')
 <button onclick="openModal()" class="btn btn-primary">+ Tugas Baru</button>
 <a href="{{ route('todo.index') }}" class="btn btn-secondary">Timeline</a>

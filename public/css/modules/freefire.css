@@ -1,0 +1,222 @@
+/* ===== FREEFIRE MODULE STYLES ===== */
+
+/* ===== FREEFIRE CALC ===== */
+.calc-layout {
+    width: 100%;
+    max-width: 560px;
+}
+
+.calc-tabs {
+    display: flex;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-lg);
+}
+
+.calc-section {
+    margin-top: var(--space-md);
+}
+
+.calc-result {
+    margin-top: var(--space-lg);
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--border-subtle);
+}
+
+.calc-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: var(--space-md);
+    padding: var(--space-sm) var(--space-md);
+    background: var(--bg-card-2);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-subtle);
+}
+
+.form-range {
+    width: 100%;
+    margin: 0.5rem 0;
+    accent-color: var(--accent-primary);
+}
+
+.luck-desc {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.25rem;
+}
+
+.calc-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.calc-layout .widget-card {
+    padding: var(--space-sm) var(--space-md);
+}
+
+.calc-layout .form-group {
+    margin-bottom: 0.5rem;
+}
+
+.calc-layout .stat-grid {
+    gap: 0.4rem;
+}
+
+.calc-layout .stat-number {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.calc-layout .stat-label {
+    font-size: 0.65rem;
+}
+
+.calc-layout .stat-item {
+    padding: 0.2rem 0.4rem;
+}
+
+.calc-item-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.4rem;
+}
+
+/* ===== FREEFIRE SESSION CARD ===== */
+.session-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: var(--space-md);
+    background: linear-gradient(180deg, var(--bg-card), var(--bg-card-2));
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-md);
+    padding: var(--space-sm) var(--space-md);
+    margin-bottom: var(--space-sm);
+}
+
+.session-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.session-col-stats,
+.session-col-estimate {
+    border-left: 1px solid var(--border-subtle);
+    padding-left: var(--space-md);
+}
+
+.session-stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.15rem 0;
+}
+
+.session-item-estimate {
+    padding: 0.35rem 0;
+    border-top: 1px solid var(--border-subtle);
+}
+
+.session-item-estimate.is-target {
+    background: rgba(var(--accent-primary-rgb, 99, 102, 241), 0.06);
+    margin: 0 calc(var(--space-md) * -1);
+    padding: 0.35rem var(--space-md);
+    border-radius: var(--radius-sm);
+    border-top: none;
+}
+
+.session-item-estimate-head {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.15rem;
+}
+
+.session-actions {
+    display: flex;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+    flex-wrap: wrap;
+}
+
+/* ===== FREEFIRE WHEEL SLOTS ===== */
+.wheel-slot-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.4rem;
+}
+
+.wheel-token-grid {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.5rem;
+}
+
+.wheel-token-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.wheel-token-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.wheel-token-input {
+    width: 48px !important;
+    text-align: center;
+    padding: 0.25rem !important;
+}
+
+.session-history-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.3rem 0;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.badge-epic-label {
+    color: #a855f7;
+}
+
+.badge-legendary-label {
+    color: #eab308;
+}
+
+.badge-artifact-label {
+    color: #ef4444;
+}
+
+/* ===== ITEM DIDAPAT ===== */
+.session-obtained-items {
+    margin-top: 0.5rem;
+    padding: 0.45rem 0.6rem;
+    background: rgba(46, 204, 113, 0.07);
+    border: 1px solid rgba(46, 204, 113, 0.25);
+    border-radius: var(--radius-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.session-obtained-items-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #2ecc71;
+    opacity: 0.85;
+}
+
+.session-obtained-items-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+}
