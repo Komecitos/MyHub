@@ -44,6 +44,33 @@ body {
     border-color: var(--border-hover);
 }
 
+.portal-nav {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.portal-nav-btn {
+    padding: 0.4rem 0.8rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-default);
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.8rem;
+    transition: var(--transition-fast);
+}
+
+.portal-nav-btn:hover {
+    border-color: var(--border-hover);
+    color: var(--text-primary);
+}
+
+.portal-nav-btn.active {
+    background: var(--accent-primary);
+    border-color: var(--accent-primary);
+    color: white;
+}
+
 /* ===== TOP BAR ===== */
 .top-bar {
     width: 100%;
@@ -131,6 +158,25 @@ body {
     padding: 0 var(--container-pad);
     text-align: center;
     font-size: 0.85rem;
+}
+
+.docs-changelog-item {
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.bottom-bar-inner:hover {
+    color: var(--text-primary);
+}
+
+.docs-info-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-subtle);
 }
 
 /* ===== PORTAL GRID (Dashboard) ===== */

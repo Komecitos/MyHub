@@ -22,6 +22,8 @@ class FreefireSpinSession extends Model
         'status',
         'event_start',
         'event_end',
+        'ticket_count',
+
     ];
 
     public function logs()
@@ -33,4 +35,4 @@ class FreefireSpinSession extends Model
     {
         return $this->hasMany(FreefireWheelSlot::class, 'session_id');
     }
-}   
+}

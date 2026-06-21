@@ -55,6 +55,16 @@
         toast.style.animation = 'toast-out 0.3s ease forwards';
         setTimeout(() => toast.remove(), 300);
     }
+
+    function openDocsModal() {
+        document.getElementById('modal-docs').classList.add('show');
+        document.getElementById('modal-docs-overlay').classList.add('show');
+    }
+
+    function closeDocsModal() {
+        document.getElementById('modal-docs').classList.remove('show');
+        document.getElementById('modal-docs-overlay').classList.remove('show');
+    }
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -89,9 +99,13 @@
 <body>
 
     {{-- Global Header --}}
+    {{-- Global Header --}}
     <header class="global-header">
         <a href="/" class="app-name">MyHub</a>
-        <a href="/" class="back-btn">Back to Hub</a>
+        <nav class="portal-nav">
+            <a href="{{ route('todo.index') }}" class="portal-nav-btn {{ Request::is('todos*') ? 'active' : '' }}">Todo</a>
+            <a href="{{ route('freefire.index') }}" class="portal-nav-btn {{ Request::is('freefires*') ? 'active' : '' }}">Free Fire</a>
+        </nav>
     </header>
 
     @if(!Request::is('/'))
@@ -107,9 +121,50 @@
 
     {{-- Bottom Bar --}}
     <footer class="bottom-bar">
-        <div class="bottom-bar-inner">MyHub &middot; © {{ date('Y') }}</div>
+        <div class="bottom-bar-inner" onclick="openDocsModal()" style="cursor: pointer;">
+            MyHub &middot; © {{ date('Y') }}
+        </div>
     </footer>
 
+    {{-- MODAL DOKUMENTASI --}}
+    <div id="modal-docs-overlay" class="modal-overlay" onclick="closeDocsModal()"></div>
+    <div id="modal-docs" class="modal modal-create" aria-hidden="true">
+        <div class="modal-header">
+            <h3>Tentang MyHub</h3>
+            <button onclick="closeDocsModal()" class="modal-close">&times;</button>
+        </div>
+
+        <div style="max-height: 65vh; overflow-y: auto;">
+            <div class="docs-info-row">
+                <span class="task-meta">Nama Project</span>
+                <span class="task-title">MyHub</span>
+            </div>
+            <div class="docs-info-row">
+                <span class="task-meta">Tujuan</span>
+                <span class="task-title">Personal multi-portal web app untuk manajemen tugas, game tracker, catatan, dan kebutuhan pribadi lainnya dalam satu aplikasi.</span>
+            </div>
+            <div class="docs-info-row">
+                <span class="task-meta">Developer</span>
+                <span class="task-title">Irga Prayoga</span>
+            </div>
+            <div class="docs-info-row">
+                <span class="task-meta">Mulai Dibuat</span>
+                <span class="task-title">Juni 2026</span>
+            </div>
+            <div class="docs-info-row">
+                <span class="task-meta">Tech Stack</span>
+                <span class="task-title">Laravel (PHP 8.3), nwidart/laravel-modules, MySQL</span>
+            </div>
+            <div class="docs-info-row">
+                <span class="task-meta">Repository</span>
+                <span class="task-title"><a href="https://github.com/Komecitos/MyHub" target="_blank" style="color: var(--accent-primary);">github.com/Komecitos/MyHub</a></span>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="button" onclick="closeDocsModal()" class="btn btn-secondary">Tutup</button>
+        </div>
+    </div>
     {{-- Page specific scripts --}}
     @stack('scripts')
 

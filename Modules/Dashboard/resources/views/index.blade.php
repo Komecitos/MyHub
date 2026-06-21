@@ -19,13 +19,17 @@
     }
 
     .portal-grid {
-        display: grid;
-        grid-template-columns: repeat(4, minmax(220px, 1fr)) !important;
+        display: flex;
+        flex-wrap: wrap;
         gap: 2rem;
         width: 100%;
         max-width: 1100px;
-        justify-items: stretch;
         justify-content: center;
+    }
+
+    .portal-card {
+        flex: 0 1 220px;
+        max-width: 250px;
     }
 
     .dashboard-wrapper {
@@ -66,14 +70,6 @@
             </div>
         </a>
 
-        <a href="/aquaria" class="portal-card">
-            <div class="portal-card-content">
-                <span class="portal-icon">🐠</span>
-                <p class="portal-title">Aquarium</p>
-                <p class="portal-desc">Monitor akuarium</p>
-            </div>
-        </a>
-
         <a href="/freefires" class="portal-card">
             <div class="portal-card-content">
                 <span class="portal-icon">
@@ -83,6 +79,8 @@
                 <p class="portal-desc">Game tracker</p>
             </div>
         </a>
+
+
 
     </div>
 </div>

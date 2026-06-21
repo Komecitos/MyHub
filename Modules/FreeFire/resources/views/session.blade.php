@@ -24,8 +24,8 @@
     <div class="session-col">
         <p class="task-title">{{ $session->item_name }}</p>
         <p class="task-meta" style="margin-bottom: 0.5rem;">
-            <span class="badge {{ $session->spin_type === 'token_ring' ? 'badge-info' : 'badge-warning' }}">
-                {{ $session->spin_type === 'token_ring' ? 'Token Ring' : 'Faded Wheel' }}
+            <span class="badge {{ $session->spin_type === 'token_ring' ? 'badge-info' : ($session->spin_type === 'faded_wheel' ? 'badge-warning' : 'badge-danger') }}">
+                {{ $session->spin_type === 'token_ring' ? 'Token Ring' : ($session->spin_type === 'faded_wheel' ? 'Faded Wheel' : 'Token Tower') }}
             </span>
         </p>
         @if($session->event_end)
@@ -36,21 +36,21 @@
             <span class="session-obtained-items-label">✅ Didapat</span>
             <div class="session-obtained-items-list">
                 @foreach($session->obtained_items as $obtainedName)
-                    {{-- Cari rarity dari slot yang cocok --}}
-                    @php
-                        $matchedSlot = $session->slots->first(fn($s) =>
-                            $s->type === 'item' &&
-                            strcasecmp(trim($s->item_name ?? ''), trim($obtainedName)) === 0
-                        );
-                        $rarity = $matchedSlot?->rarity ?? 'epic';
-                    @endphp
-                    <span class="badge badge-{{ $rarity }}">🎁 {{ $obtainedName }}</span>
+                {{-- Cari rarity dari slot yang cocok --}}
+                @php
+                $matchedSlot = $session->slots->first(fn($s) =>
+                $s->type === 'item' &&
+                strcasecmp(trim($s->item_name ?? ''), trim($obtainedName)) === 0
+                );
+                $rarity = $matchedSlot?->rarity ?? 'epic';
+                @endphp
+                <span class="badge badge-{{ $rarity }}">🎁 {{ $obtainedName }}</span>
                 @endforeach
             </div>
         </div>
         @endif
         <div class="session-actions">
-            <button onclick="openLogModal({{ $session->id }}, '{{ $session->spin_type }}', {{ $session->current_spin }}, {{ $session->discount_percentage }}, '{{ addslashes($session->slots->where('type', 'item')->toJson()) }}')"
+            <button onclick="openLogModal({{ $session->id }}, '{{ $session->spin_type }}', {{ $session->current_spin }}, {{ $session->discount_percentage > 0 ? 'true' : 'false' }}, '{{ addslashes($session->slots->where('type', 'item')->toJson()) }}', {{ $session->current_token }}, {{ $session->ticket_count }})"
                 class="btn btn-secondary btn-sm">+ Spin</button>
             <form action="{{ route('freefire.session.complete', $session->id) }}" method="POST" style="display:inline;">
                 @csrf
@@ -75,12 +75,16 @@
         @if($session->spin_type === 'token_ring')
         <div class="session-stat">
             <span class="task-meta">🪙 Token</span>
-            <span class="task-title">
-                {{ $session->current_token }}@if($session->token_target)/{{ $session->token_target }}@endif token
-                @if($session->starting_token > 0)
-                <span class="task-meta" style="display: block; font-size: 0.75rem; font-weight: normal; margin-top: 0.1rem;">(awal: {{ $session->starting_token }})</span>
-                @endif
-            </span>
+            <span class="task-title">{{ $session->current_token }}/5</span>
+        </div>
+        @elseif($session->spin_type === 'token_tower')
+        <div class="session-stat">
+            <span class="task-meta">🏆 Token Tower</span>
+            <span class="task-title">{{ $session->current_token }}/5</span>
+        </div>
+        <div class="session-stat">
+            <span class="task-meta">🎰 Total Spin</span>
+            <span class="task-title">{{ $session->current_spin }}x</span>
         </div>
         @else
         <div class="session-stat">
@@ -98,66 +102,20 @@
     <div class="session-col session-col-estimate">
         <p class="task-meta" style="margin-bottom: 0.5rem; font-weight: 600;">Perkiraan</p>
         @if($session->spin_type === 'token_ring')
+        {{-- ... konten token_ring tetap sama ... --}}
+        @elseif($session->spin_type === 'token_tower')
         <div class="session-stat">
-            <span class="task-meta">E(token/spin)</span>
-            <span class="task-title">
-                {{ number_format($session->expected_token_per_spin, 2) }}
-                @if($session->avg_token_per_spin)
-                <span class="task-meta">· aktual {{ number_format($session->avg_token_per_spin, 2) }}</span>
-                @endif
-            </span>
+            <span class="task-meta">🎯 Token Tersisa</span>
+            <span class="task-title">{{ $session->remaining_token }}</span>
         </div>
         <div class="session-stat">
-            <span class="task-meta">🍀 Luck Aktual</span>
-            <span class="task-title">
-                @if($session->luck_actual === null)
-                <span class="badge badge-secondary">Belum ada data</span>
-                @elseif($session->luck_actual >= 70)
-                <span class="badge badge-success">{{ $session->luck_actual }}% Beruntung</span>
-                @elseif($session->luck_actual >= 40)
-                <span class="badge badge-warning">{{ $session->luck_actual }}% Normal</span>
-                @else
-                <span class="badge badge-danger">{{ $session->luck_actual }}% Sial</span>
-                @endif
-            </span>
+            <span class="task-meta">🔄 Sisa Spin (Pity)</span>
+            <span class="task-title">~{{ $session->est_spins_left }}x</span>
         </div>
-        @if(count($session->item_estimates) > 0)
-        <p class="task-meta" style="font-weight: 600; margin-top: 0.5rem; margin-bottom: 0.25rem;">Item Hadiah</p>
-        @foreach($session->item_estimates as $item)
-        <div class="session-item-estimate{{ $item['is_target'] ? ' is-target' : '' }}">
-            <div class="session-item-estimate-head">
-                <span class="badge badge-{{ $item['rarity'] }}">{{ $item['name'] }}</span>
-                @if($item['is_target'])
-                <span class="badge badge-info" style="font-size: 0.65rem;">Target</span>
-                @endif
-            </div>
-            <div class="session-stat" style="padding-left: 0; padding-right: 0;">
-                <span class="task-meta">{{ $item['drop_rate'] }}% · {{ $item['token_exchange'] }} token</span>
-                <span class="task-title" style="color: var(--accent-primary);">
-                    @if($session->current_spin > 0)
-                        @if($item['remaining_token'] > 0)
-                        ~{{ $item['est_diamond_left'] }}dm ({{ $item['est_spins_left'] }}x)
-                        @else
-                        <span class="badge badge-success">Cukup</span>
-                        @endif
-                    @else
-                        ~{{ $item['theoretical_diamond'] }}dm ({{ $item['theoretical_spins'] }}x)
-                    @endif
-                </span>
-            </div>
-            @if($session->current_spin > 0)
-            <p class="task-meta" style="font-size: 0.7rem; margin-top: 0.1rem;">
-                Token: {{ $session->current_token }}/{{ $item['token_exchange'] }}
-                @if($item['remaining_token'] > 0)
-                · kurang {{ $item['remaining_token'] }}
-                @endif
-            </p>
-            @endif
+        <div class="session-stat">
+            <span class="task-meta">💎 Estimasi Diamond</span>
+            <span class="task-title" style="color: var(--accent-primary);">~{{ $session->est_diamond_left }} dm</span>
         </div>
-        @endforeach
-        @else
-        <p class="task-meta" style="margin-top: 0.5rem;">Belum ada item hadiah di wheel.</p>
-        @endif
         @else
         <div class="session-stat">
             <span class="task-meta">🎰 Sisa Spin</span>
@@ -225,6 +183,7 @@
             <select name="spin_type" class="form-control" onchange="toggleSpinType(this)">
                 <option value="token_ring">Token Ring</option>
                 <option value="faded_wheel">Faded Wheel</option>
+                <option value="token_tower">Token Tower</option>
             </select>
         </div>
         <div class="form-grid-2" style="margin-top: 1rem;">
@@ -238,14 +197,48 @@
             </div>
         </div>
         <div id="faded-options" style="display:none; margin-top: 1rem;">
-            <p class="task-meta" style="margin-bottom: 0.75rem;">Harga normal: 9 · 19 · 39 · 69 · 99 · 199 · 399 · 799</p>
             <div class="form-group">
                 <label class="form-check">
-                    <input type="checkbox" name="has_discount" value="1">
-                    Ada diskon 20%?
+                    <input type="checkbox" name="has_discount" id="create-has-discount" value="1" onchange="previewFadedPrice()">
+                    Ada diskon?
                 </label>
             </div>
+
+            <div class="calc-result" style="margin-top: 0.75rem;">
+                <div class="stat-grid">
+                    @php $fadedBasePrices = [9, 19, 39, 69, 99, 199, 399, 799]; @endphp
+                    @foreach($fadedBasePrices as $i => $price)
+                    <div class="stat-item">
+                        <span class="stat-number create-faded-price" data-idx="{{ $i }}">{{ $price }}</span>
+                        <span class="stat-label">Spin {{ $i+1 }}</span>
+                    </div>
+                    @endforeach
+                </div>
+                <div class="calc-total" style="margin-top: 0.5rem;">
+                    <span class="task-meta">Total 8 spin:</span>
+                    <span id="create-faded-total" class="stat-number" style="color: var(--accent-primary);">1632 dm</span>
+                </div>
+            </div>
         </div>
+
+        <div id="tower-options" style="display:none; margin-top: 1rem;">
+
+            <p class="task-meta" style="margin-bottom: 0.75rem;">Harga: 1x = 19dm · 5x = 79dm · Target: 5 Token</p>
+
+            <div class="form-group">
+                <label class="form-label">Tingkat Keberuntungan (estimasi awal)
+                    <span id="tower-create-luck-label" class="badge badge-info">0%</span>
+                </label>
+                <input type="range" name="tower_luck" id="tower-create-luck" min="0" max="100" value="0" step="10"
+                    oninput="document.getElementById('tower-create-luck-label').textContent = this.value + '%'" class="form-range">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Drop Rate Spin Shard (%)</label>
+                <input type="number" name="shard_rate" value="80" min="0" max="100" class="form-control">
+            </div>
+        </div>
+
         <div id="token-options" style="margin-top: 1rem;">
             <div class="form-group" style="margin-bottom: 1rem;">
                 <label class="form-label">Token Awal (Starting Token)</label>
@@ -284,7 +277,7 @@
         </div>
         <div class="form-actions">
             <button type="button" onclick="closeAllModals()" class="btn btn-secondary">Batal</button>
-            <button type="submit" class="btn btn-primary">Buat Sesi</button>
+            <button type="button" onclick="validateAndSubmitSession()" class="btn btn-primary">Buat Sesi</button>
         </div>
     </form>
 </div>
@@ -297,7 +290,24 @@
     </div>
     <form id="form-log" method="POST">
         @csrf
-        <div class="form-grid-2">
+
+        {{-- TOGGLE MODE KHUSUS TOWER --}}
+        <div id="log-tower-mode-toggle" class="form-group" style="display:none;">
+            <label class="form-check">
+                <input type="checkbox" id="log-tower-diamond-mode" onchange="toggleTowerMode(this)">
+                Saya lupa hitung spin, input diamond saja
+            </label>
+        </div>
+
+        <div id="log-price-mode-wrapper" class="form-group" style="display:none;">
+            <label class="form-label">Mode Harga</label>
+            <select id="log-price-mode" class="form-control" onchange="autoCalcDiamond()">
+                <option value="normal">Normal</option>
+                <option value="discount">Diskon</option>
+                <option value="ticket" id="log-ticket-option">Tiket (Gratis)</option>
+            </select>
+        </div>
+        <div id="log-normal-mode" class="form-grid-2">
             <div class="form-group">
                 <label class="form-label">Jumlah Spin</label>
                 <input type="number" id="log-spin-count" name="spin_count"
@@ -309,14 +319,41 @@
                     class="form-control" readonly style="opacity: 0.7;">
             </div>
         </div>
+
+        <div id="log-diamond-mode" class="form-group" style="display:none;">
+            <label class="form-label">Total Diamond yang Dihabiskan</label>
+            <input type="number" id="log-diamond-input" min="0" class="form-control"
+                placeholder="cth: 700" oninput="calcSpinFromDiamond()">
+            <p class="task-meta" style="margin-top: 0.3rem;" id="log-diamond-result"></p>
+        </div>
+
         <div id="log-token-section" class="form-group">
             <label class="form-label">Token Didapat</label>
             <input type="number" name="token_gained" value="0" min="0" class="form-control">
         </div>
+
+        <div id="log-tower-progress" class="form-group" style="display:none;">
+            <label class="form-check">
+                <input type="checkbox" id="log-tower-token-checkbox" onchange="toggleTowerTokenSelect(this)">
+                Dapat Token?
+            </label>
+            <div id="log-tower-token-select-wrapper" style="display:none; margin-top: 0.5rem;">
+                <label class="form-label">Token Berapa?</label>
+                <select name="tower_token_number" id="log-tower-token-select" class="form-control">
+                    <option value="1">Token 1</option>
+                    <option value="2">Token 2</option>
+                    <option value="3">Token 3</option>
+                    <option value="4">Token 4</option>
+                    <option value="5">Token 5</option>
+                </select>
+            </div>
+        </div>
+
         <div id="log-item-section" class="form-group" style="display:none;">
             <label class="form-label">Dapat Item Langsung?</label>
             <div id="log-item-checkboxes" class="item-checkbox-grid"></div>
         </div>
+
         <div class="form-actions">
             <button type="button" onclick="closeAllModals()" class="btn btn-secondary">Batal</button>
             <button type="submit" class="btn btn-primary">Simpan</button>
@@ -339,11 +376,14 @@
         100: 5
     };
     const fadedBase = [9, 19, 39, 69, 99, 199, 399, 799];
+    const fadedDiscounted = [5, 15, 29, 49, 69, 99, 299, 699];
 
     let slotIndex = 8;
     let currentSpinType = 'token_ring';
-    let currentDiscount = 0;
     let currentSpinNumber = 0;
+    let currentHasDiscount = false;
+    let currentTicketCount = 0;
+
 
     function gcd(a, b) {
         return b === 0 ? a : gcd(b, a % b);
@@ -353,15 +393,15 @@
         return (a * b) / gcd(a, b);
     }
 
-    function spinsToHarga(spins) {
+    function spinsToHarga(spins, price1 = 9, price5 = 39) {
         const fiveSpins = Math.floor(spins / 5);
         const oneSpins = spins % 5;
-        return (fiveSpins * 39) + (oneSpins * 9);
+        return (fiveSpins * price5) + (oneSpins * price1);
     }
 
-    function fadedPrice(spinIdx, discount) {
+    function fadedPrice(spinIdx, hasDiscount) {
         if (spinIdx < 0 || spinIdx >= fadedBase.length) return 0;
-        return Math.ceil(fadedBase[spinIdx] * (1 - discount / 100));
+        return hasDiscount ? fadedDiscounted[spinIdx] : fadedBase[spinIdx];
     }
 
     function openModal() {
@@ -377,35 +417,141 @@
     }
 
     function toggleSpinType(el) {
-        const isToken = el.value === 'token_ring';
-        document.getElementById('token-options').style.display = isToken ? 'block' : 'none';
-        document.getElementById('faded-options').style.display = isToken ? 'none' : 'block';
+        const type = el.value;
+        document.getElementById('token-options').style.display = type === 'token_ring' ? 'block' : 'none';
+        document.getElementById('faded-options').style.display = type === 'faded_wheel' ? 'block' : 'none';
+        document.getElementById('tower-options').style.display = type === 'token_tower' ? 'block' : 'none';
     }
 
     function autoCalcDiamond() {
         const spinCount = parseInt(document.getElementById('log-spin-count').value) || 1;
+        const priceMode = document.getElementById('log-price-mode')?.value || 'normal';
+        const isDiscount = priceMode === 'discount';
+        const isTicket = priceMode === 'ticket';
 
         if (currentSpinType === 'faded_wheel') {
             let total = 0;
             for (let i = 0; i < spinCount; i++) {
-                total += fadedPrice(currentSpinNumber + i, currentDiscount);
+                total += fadedPrice(currentSpinNumber + i, isDiscount);
             }
             document.getElementById('log-diamond').value = total;
+        } else if (currentSpinType === 'token_tower') {
+            if (isTicket) {
+                document.getElementById('log-diamond').value = 0;
+            } else {
+                const price1 = isDiscount ? 9 : 19;
+                const price5 = isDiscount ? 39 : 79;
+                document.getElementById('log-diamond').value = spinsToHarga(spinCount, price1, price5);
+            }
         } else {
-            document.getElementById('log-diamond').value = spinsToHarga(spinCount);
+            if (isTicket) {
+                document.getElementById('log-diamond').value = 0;
+            } else {
+                const price1 = isDiscount ? 5 : 9;
+                const price5 = isDiscount ? 19 : 39;
+                document.getElementById('log-diamond').value = spinsToHarga(spinCount, price1, price5);
+            }
         }
     }
 
-    function openLogModal(id, spinType, currentSpin, discount, itemsJson) {
+    function towerSpinsToHarga(spins) {
+        const fiveSpins = Math.floor(spins / 5);
+        const oneSpins = spins % 5;
+        return (fiveSpins * 79) + (oneSpins * 19);
+    }
+
+    function toggleTowerMode(checkbox) {
+        const isDiamondMode = checkbox.checked;
+        document.getElementById('log-normal-mode').style.display = isDiamondMode ? 'none' : 'flex';
+        document.getElementById('log-diamond-mode').style.display = isDiamondMode ? 'block' : 'none';
+
+        if (isDiamondMode) {
+            document.getElementById('log-spin-count').removeAttribute('name');
+            document.getElementById('log-diamond').removeAttribute('name');
+        } else {
+            document.getElementById('log-spin-count').setAttribute('name', 'spin_count');
+            document.getElementById('log-diamond').setAttribute('name', 'diamond_spent');
+        }
+    }
+
+    function toggleTowerTokenSelect(checkbox) {
+        document.getElementById('log-tower-token-select-wrapper').style.display = checkbox.checked ? 'block' : 'none';
+    }
+
+    function calcSpinFromDiamond() {
+        const inputDiamond = parseInt(document.getElementById('log-diamond-input').value) || 0;
+
+        // Cari kombinasi terdekat: maksimalkan paket 5x (79dm), sisanya 1x (19dm)
+        const fiveSpins = Math.floor(inputDiamond / 79);
+        let remainingDm = inputDiamond - (fiveSpins * 79);
+        const oneSpins = Math.floor(remainingDm / 19);
+        const usedDiamond = (fiveSpins * 79) + (oneSpins * 19);
+        const totalSpin = (fiveSpins * 5) + oneSpins;
+        const leftover = inputDiamond - usedDiamond;
+
+        document.getElementById('log-diamond-result').innerHTML =
+            `Estimasi: <strong>${totalSpin} spin</strong> (${fiveSpins}x paket 5x + ${oneSpins}x paket 1x) ` +
+            `= ${usedDiamond}dm digunakan` +
+            (leftover > 0 ? ` <span style="color: var(--text-muted);">(sisa ${leftover}dm diabaikan)</span>` : '');
+
+        // Set hidden input untuk submit
+        let hiddenSpin = document.getElementById('hidden-spin-count');
+        let hiddenDiamond = document.getElementById('hidden-diamond-spent');
+
+        if (!hiddenSpin) {
+            hiddenSpin = document.createElement('input');
+            hiddenSpin.type = 'hidden';
+            hiddenSpin.id = 'hidden-spin-count';
+            hiddenSpin.name = 'spin_count';
+            document.getElementById('form-log').appendChild(hiddenSpin);
+        }
+        if (!hiddenDiamond) {
+            hiddenDiamond = document.createElement('input');
+            hiddenDiamond.type = 'hidden';
+            hiddenDiamond.id = 'hidden-diamond-spent';
+            hiddenDiamond.name = 'diamond_spent';
+            document.getElementById('form-log').appendChild(hiddenDiamond);
+        }
+
+        hiddenSpin.value = totalSpin;
+        hiddenDiamond.value = usedDiamond;
+    }
+
+    function openLogModal(id, spinType, currentSpin, discount, itemsJson, currentTokenLevel = 0, ticketCount = 0) {
         currentSpinType = spinType;
-        currentDiscount = discount;
+        currentHasDiscount = !!discount;
         currentSpinNumber = currentSpin;
+        currentTicketCount = ticketCount;
+
 
         document.getElementById('log-spin-count').value = 1;
+
+        const spinCountInput = document.getElementById('log-spin-count');
+        spinCountInput.max = spinType === 'faded_wheel' ? 8 : 999;
+
+        document.getElementById('log-tower-diamond-mode').checked = false;
+        document.getElementById('log-normal-mode').style.display = 'flex';
+        document.getElementById('log-diamond-mode').style.display = 'none';
+
+        document.getElementById('log-price-mode-wrapper').style.display =
+            (spinType === 'token_ring' || spinType === 'faded_wheel' || spinType === 'token_tower') ? 'block' : 'none';
+        document.getElementById('log-price-mode').value = 'normal';
+
+        document.getElementById('log-ticket-option').style.display =
+            (spinType === 'token_ring' || spinType === 'token_tower') ? 'block' : 'none';
+
+        document.getElementById('log-ticket-option').textContent =
+            spinType === 'token_tower' ? 'Tiket (Pakai Shard)' : 'Tiket (Gratis)';
+
         autoCalcDiamond();
 
         document.getElementById('log-token-section').style.display =
             spinType === 'token_ring' ? 'block' : 'none';
+
+        document.getElementById('log-tower-mode-toggle').style.display =
+            spinType === 'token_tower' ? 'block' : 'none';
+        document.getElementById('log-tower-progress').style.display =
+            spinType === 'token_tower' ? 'block' : 'none';
 
         const itemSection = document.getElementById('log-item-section');
         const rawItems = JSON.parse(itemsJson || '[]');
@@ -414,11 +560,16 @@
         if (spinType === 'token_ring' && items.length > 0) {
             itemSection.style.display = 'block';
             document.getElementById('log-item-checkboxes').innerHTML = items.map(item => `
-                <label class="item-checkbox-label">
-                    <input type="checkbox" name="got_item_id[]" value="${item.id}">
-                    <span class="badge badge-${item.rarity}">${item.item_name}</span>
-                </label>
-            `).join('');
+            <label class="item-checkbox-label">
+                <input type="checkbox" name="got_item_id[]" value="${item.id}">
+                <span class="badge badge-${item.rarity}">${item.item_name}</span>
+            </label>
+        `).join('');
+        }
+        if (spinType === 'token_tower') {
+            document.getElementById('log-tower-token-checkbox').checked = false;
+            document.getElementById('log-tower-token-select-wrapper').style.display = 'none';
+            document.getElementById('log-tower-token-select').value = Math.min(5, currentTokenLevel + 1);
         } else {
             itemSection.style.display = 'none';
         }
@@ -458,7 +609,12 @@
         updateExpected();
     }
 
+
     function updateExpected() {
+        const priceMode = document.getElementById('token-price-mode')?.value || 'normal';
+        const price1 = priceMode === 'discount' ? 5 : 9;
+        const price5 = priceMode === 'discount' ? 19 : 39;
+
         let tokenSlots = [];
         document.querySelectorAll('#token-options .calc-token-input').forEach(input => {
             const count = parseInt(input.value) || 0;
@@ -518,10 +674,10 @@
             tokenSlots.forEach(t => {
                 const rate = totalBobot > 0 ? (t.weight / totalBobot * 100) : 0;
                 dropRateHtml += `
-                    <div class="session-stat">
-                        <span class="task-meta">Token x${t.val}</span>
-                        <span class="task-title">${rate.toFixed(1)}%</span>
-                    </div>`;
+                <div class="session-stat">
+                    <span class="task-meta">Token x${t.val}</span>
+                    <span class="task-title">${rate.toFixed(1)}%</span>
+                </div>`;
             });
         }
 
@@ -530,16 +686,74 @@
             itemRows.forEach(i => {
                 const rate = totalBobot > 0 ? (i.totalWeight / totalBobot * 100) : 0;
                 const estSpin = expectedToken > 0 ? Math.ceil(i.tokenReq / expectedToken) : 0;
-                const estDiamond = spinsToHarga(estSpin);
+                const estDiamond = spinsToHarga(estSpin, price1, price5);
                 dropRateHtml += `
-                    <div class="session-stat">
-                        <span class="task-meta">${i.name}</span>
-                        <span class="task-title" style="color: var(--accent-primary);">${rate.toFixed(1)}% · ~${estDiamond}dm (${estSpin}x)</span>
-                    </div>`;
+                <div class="session-stat">
+                    <span class="task-meta">${i.name}</span>
+                    <span class="task-title" style="color: var(--accent-primary);">${rate.toFixed(1)}% · ~${estDiamond}dm (${estSpin}x)</span>
+                </div>`;
             });
         }
 
         document.getElementById('session-droprate-list').innerHTML = dropRateHtml;
+    }
+
+    function validateAndSubmitSession() {
+        const form = document.querySelector('#modal-create form');
+        const itemName = form.querySelector('[name="item_name"]').value.trim();
+        const spinType = form.querySelector('[name="spin_type"]').value;
+
+        let errors = [];
+
+        if (!itemName) {
+            errors.push('Nama Item wajib diisi.');
+        }
+
+        if (spinType === 'token_ring') {
+            // Pastikan minimal ada 1 komposisi token atau item
+            let hasComposition = false;
+            document.querySelectorAll('#token-options .calc-token-input').forEach(input => {
+                if (parseInt(input.value) > 0) hasComposition = true;
+            });
+            document.querySelectorAll('#wheel-slots-container .wheel-slot-row').forEach(row => {
+                const slot = parseInt(row.querySelector('.calc-item-slot')?.value) || 0;
+                if (slot > 0) hasComposition = true;
+            });
+
+            if (!hasComposition) {
+                errors.push('Token Ring wajib punya minimal 1 komposisi token atau item hadiah.');
+            }
+        }
+
+        if (errors.length > 0) {
+            showToast(errors.join(' '), 'error');
+            return;
+        }
+
+        form.submit();
+    }
+
+    function previewFadedPrice() {
+        const hasDiscount = document.getElementById('create-has-discount').checked;
+        let total = 0;
+
+        document.querySelectorAll('.create-faded-price').forEach(el => {
+            const idx = parseInt(el.dataset.idx);
+            const price = hasDiscount ? fadedDiscounted[idx] : fadedBase[idx];
+            el.textContent = price + ' dm';
+            total += price;
+        });
+
+        document.getElementById('create-faded-total').textContent = total + ' dm';
+    }
+
+    function toggleSpinType(el) {
+        const type = el.value;
+        document.getElementById('token-options').style.display = type === 'token_ring' ? 'block' : 'none';
+        document.getElementById('faded-options').style.display = type === 'faded_wheel' ? 'block' : 'none';
+        document.getElementById('tower-options').style.display = type === 'token_tower' ? 'block' : 'none';
+
+        if (type === 'faded_wheel') previewFadedPrice();
     }
 
     document.addEventListener('change', function(e) {
