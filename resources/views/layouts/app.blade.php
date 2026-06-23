@@ -99,7 +99,6 @@
 <body>
 
     {{-- Global Header --}}
-    {{-- Global Header --}}
     <header class="global-header">
         <a href="/" class="app-name">MyHub</a>
         <nav class="portal-nav">

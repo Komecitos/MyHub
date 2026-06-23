@@ -710,7 +710,6 @@
         }
 
         if (spinType === 'token_ring') {
-            // Pastikan minimal ada 1 komposisi token atau item
             let hasComposition = false;
             document.querySelectorAll('#token-options .calc-token-input').forEach(input => {
                 if (parseInt(input.value) > 0) hasComposition = true;
@@ -723,6 +722,24 @@
             if (!hasComposition) {
                 errors.push('Token Ring wajib punya minimal 1 komposisi token atau item hadiah.');
             }
+        }
+
+        if (spinType === 'faded_wheel') {
+            // Faded Wheel tidak butuh validasi tambahan selain nama item
+            // (harga sudah fix, diskon opsional)
+        }
+
+        if (spinType === 'token_tower') {
+            const shardRate = form.querySelector('[name="shard_rate"]');
+            if (shardRate && (parseInt(shardRate.value) < 0 || parseInt(shardRate.value) > 100)) {
+                errors.push('Drop Rate Spin Shard harus antara 0-100%.');
+            }
+        }
+
+        const eventStart = form.querySelector('[name="event_start"]').value;
+        const eventEnd = form.querySelector('[name="event_end"]').value;
+        if (eventStart && eventEnd && eventStart > eventEnd) {
+            errors.push('Tanggal Mulai Event tidak boleh setelah Tanggal Selesai.');
         }
 
         if (errors.length > 0) {

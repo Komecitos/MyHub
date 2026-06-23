@@ -18,20 +18,16 @@ class FreeFireController extends Controller
 
     public function calc()
     {
-        $completedTokenSessions = FreefireSpinSession::where('status', 'completed')
-            ->where('spin_type', 'token_ring')
+        $completedSessions = FreefireSpinSession::whereIn('spin_type', ['token_ring', 'token_tower'])
+            ->where('status', 'completed')
             ->orderBy('updated_at', 'desc')
-            ->limit(10)
+            ->limit(15)
             ->get();
 
-        // Hitung rata-rata token per spin dari SEMUA riwayat (untuk koreksi, kurangi starting_token agar akurat)
-        $totalToken = $completedTokenSessions->map(function ($s) {
-            return max(0, $s->current_token - ($s->starting_token ?? 0));
-        })->sum();
-        $totalSpin = $completedTokenSessions->sum('current_spin');
-        $avgActualTokenPerSpin = $totalSpin > 0 ? round($totalToken / $totalSpin, 2) : null;
+        $completedTokenSessions = $completedSessions->where('spin_type', 'token_ring');
+        $completedTowerSessions = $completedSessions->where('spin_type', 'token_tower');
 
-        return view('freefire::calc', compact('completedTokenSessions', 'avgActualTokenPerSpin'));
+        return view('freefire::calc', compact('completedTokenSessions', 'completedTowerSessions'));
     }
     public function session()
     {

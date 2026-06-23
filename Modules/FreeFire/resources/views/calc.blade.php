@@ -49,7 +49,7 @@
                 </div>
 
                 <div class="calc-result">
-                    <div class="stat-grid">
+                    <div class="stat-grid faded-spin-grid">
                         @php $fadedPrices = [9, 19, 39, 69, 99, 199, 399, 799]; @endphp
                         @foreach($fadedPrices as $i => $price)
                         <div class="stat-item">
@@ -134,56 +134,79 @@
         <div id="tab-tower" class="calc-section" style="display:none;">
             <div class="widget-card">
                 <h4 class="widget-title">Token Tower</h4>
-                <p class="task-meta" style="margin-bottom: 1rem;">Harga: 1x = 19dm · 5x = 79dm · Target: 5 Token</p>
 
-                <div class="form-group">
-                    <label class="form-label">Tingkat Keberuntungan
-                        <span id="tower-luck-label" class="badge badge-info">0%</span>
-                    </label>
-                    <input type="range" id="tower-luck" min="0" max="100" value="0" step="10"
-                        oninput="calcTower()" class="form-range">
-                    <div class="luck-desc">
-                        <span class="task-meta">Worst Case (Pity)</span>
-                        <span class="task-meta">Best Case</span>
-                    </div>
-                </div>
+                <div class="tower-main-grid">
+                    {{-- KOLOM KIRI: INPUT + RINCIAN PITY --}}
+                    <div>
+                        <p class="task-meta" style="margin-bottom: 1rem;">Harga: 1x = 19dm · 5x = 79dm · Target: 5 Token</p>
 
-                <div class="form-group">
-                    <label class="form-label">Drop Rate Spin Shard (%)</label>
-                    <input type="number" id="tower-shard-rate" value="80" min="0" max="100" class="form-control" oninput="calcTower()">
-                </div>
-
-                <div class="calc-result">
-                    <p class="task-meta" style="margin-bottom: 0.5rem; font-weight: 600;">Rincian per Token (Pity Maksimal):</p>
-                    <div class="stat-grid">
-                        @php $towerPity = [20, 35, 50, 80, 100]; @endphp
-                        @foreach($towerPity as $i => $pity)
-                        <div class="stat-item">
-                            <span class="stat-number tower-pity-display" data-pity="{{ $pity }}" data-idx="{{ $i+1 }}">{{ $pity }}</span>
-                            <span class="stat-label">Token {{ $i+1 }}</span>
+                        <div class="form-group">
+                            <label class="form-label">Tingkat Keberuntungan
+                                <span id="tower-luck-label" class="badge badge-info">0%</span>
+                            </label>
+                            <input type="range" id="tower-luck" min="0" max="100" value="0" step="10"
+                                oninput="calcTower()" class="form-range">
+                            <div class="luck-desc">
+                                <span class="task-meta">Worst Case (Pity)</span>
+                                <span class="task-meta">Best Case</span>
+                            </div>
                         </div>
-                        @endforeach
+
+                        <div class="form-group">
+                            <label class="form-label">Drop Rate Spin Shard (%)</label>
+                            <input type="number" id="tower-shard-rate" value="80" min="0" max="100" class="form-control" oninput="calcTower()">
+                        </div>
+
+                        <p class="task-meta" style="margin-top: 1rem; margin-bottom: 0.5rem; font-weight: 600;">Rincian per Token (Pity Maksimal):</p>
+                        <div class="stat-grid">
+                            @php $towerPity = [20, 35, 50, 80, 100]; @endphp
+                            @foreach($towerPity as $i => $pity)
+                            <div class="stat-item">
+                                <span class="stat-number tower-pity-display" data-pity="{{ $pity }}" data-idx="{{ $i+1 }}">{{ $pity }}</span>
+                                <span class="stat-label">Token {{ $i+1 }}</span>
+                            </div>
+                            @endforeach
+                        </div>
                     </div>
 
-                    <div class="calc-total" style="margin-top: 1rem;">
-                        <span class="task-meta">Total Spin (setelah luck):</span>
-                        <span id="tower-total-spin" class="stat-number">285x</span>
-                    </div>
-                    <div class="calc-total">
-                        <span class="task-meta">Shard Terkumpul:</span>
-                        <span id="tower-shard-total" class="stat-number">228</span>
-                    </div>
-                    <div class="calc-total">
-                        <span class="task-meta">Spin Gratis dari Shard:</span>
-                        <span id="tower-free-spin" class="stat-number">76x</span>
-                    </div>
-                    <div class="calc-total">
-                        <span class="task-meta">Spin Dibayar:</span>
-                        <span id="tower-paid-spin" class="stat-number">209x</span>
-                    </div>
-                    <div class="calc-total">
-                        <span class="task-meta">Estimasi Diamond:</span>
-                        <span id="tower-total-diamond" class="stat-number" style="color: var(--accent-primary);">~3315 dm</span>
+                    {{-- KOLOM KANAN: RINGKASAN --}}
+                    <div>
+                        <p class="task-meta" style="margin-bottom: 0.5rem; font-weight: 600;">Ringkasan:</p>
+                        <div class="calc-total">
+                            <span class="task-meta">Total Spin:</span>
+                            <span id="tower-total-spin" class="stat-number">285x</span>
+                        </div>
+                        <div class="calc-total">
+                            <span class="task-meta">Shard Terkumpul:</span>
+                            <span id="tower-shard-total" class="stat-number">228</span>
+                        </div>
+                        <div class="calc-total">
+                            <span class="task-meta">Spin Gratis dari Shard:</span>
+                            <span id="tower-free-spin" class="stat-number">76x</span>
+                        </div>
+                        <div class="calc-total">
+                            <span class="task-meta">Spin Dibayar:</span>
+                            <span id="tower-paid-spin" class="stat-number">209x</span>
+                        </div>
+                        <div class="calc-total">
+                            <span class="task-meta">Estimasi Diamond:</span>
+                            <span id="tower-total-diamond" class="stat-number" style="color: var(--accent-primary);">~3315 dm</span>
+                        </div>
+
+                        {{-- RIWAYAT SESI TOWER --}}
+                        @if($completedTowerSessions->count() > 0)
+                        <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-subtle);">
+                            <p class="task-meta" style="font-weight: 600; margin-bottom: 0.5rem;">📜 Riwayat Sesi Sebelumnya</p>
+                            @foreach($completedTowerSessions as $hist)
+                            <div class="session-history-item">
+                                <span class="task-title" style="font-size: 0.8rem;">{{ $hist->item_name }}</span>
+                                <span class="task-meta" style="font-size: 0.75rem;">
+                                    {{ $hist->spent_diamond }} dm · {{ $hist->current_spin }} spin
+                                </span>
+                            </div>
+                            @endforeach
+                        </div>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -385,6 +408,21 @@
         document.getElementById('tower-free-spin').textContent = freeSpin + 'x';
         document.getElementById('tower-paid-spin').textContent = paidSpin + 'x';
         document.getElementById('tower-total-diamond').textContent = '~' + totalDiamond + ' dm';
+    }
+
+    function switchTab(tab) {
+        document.getElementById('tab-faded').style.display = tab === 'faded' ? 'block' : 'none';
+        document.getElementById('tab-token').style.display = tab === 'token' ? 'block' : 'none';
+        document.getElementById('tab-tower').style.display = tab === 'tower' ? 'block' : 'none';
+
+        const tabs = ['faded', 'token', 'tower'];
+        document.querySelectorAll('.tab-btn').forEach((btn, i) => {
+            btn.className = tabs[i] === tab ? 'btn btn-primary tab-btn' : 'btn btn-secondary tab-btn';
+        });
+
+        document.querySelector('.calc-layout').classList.toggle('wide', tab === 'tower');
+
+        if (tab === 'tower') calcTower();
     }
 
     calcFaded();

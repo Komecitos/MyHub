@@ -3,13 +3,14 @@
 /* ===== FREEFIRE CALC ===== */
 .calc-layout {
     width: 100%;
-    max-width: 560px;
+    max-width: 960px;
 }
 
 .calc-tabs {
     display: flex;
     gap: var(--space-sm);
     margin-bottom: var(--space-lg);
+    justify-content: center;
 }
 
 .calc-section {
@@ -80,6 +81,26 @@
     align-items: center;
     gap: 0.5rem;
     margin-bottom: 0.4rem;
+}
+
+.faded-spin-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+}
+
+
+.tower-main-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.calc-layout {
+    width: 100%;
+    max-width: 560px;
+}
+
+.calc-layout.wide {
+    max-width: 960px;
 }
 
 /* ===== FREEFIRE SESSION CARD ===== */
